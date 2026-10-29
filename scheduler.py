@@ -183,14 +183,15 @@ def main() -> None:
         writer.writerows(summary)
     (args.output / "task_timelines.json").write_text(json.dumps(rows, indent=2), encoding="utf-8")
     write_svg(rows, args.output / "comparison.svg")
-    print("ENERGY-AWARE BIG.LITTLE SCHEDULER — MODEL RUN")
+    print("ENERGY-AWARE BIG.LITTLE SCHEDULER - MODEL RUN")
     print("Illustrative estimates only; no phone hardware was measured.\n")
     print(f"{'Workload':<24} {'Policy':<18} {'Resp ms':>8} {'TAT ms':>8} {'Energy J':>9} {'Miss':>5}")
     for row in rows:
         if row["workload"] in {"A-mixed", "B-low-battery", "C-urgent", "D-background"}:
             print(f"{row['workload']:<24} {row['policy']:<18} {row['avg_response_ms']:>8.2f} "
                   f"{row['avg_turnaround_ms']:>8.2f} {row['estimated_energy_j']:>9.3f} {row['deadline_misses']:>5}")
-    print(f"\nWrote {len(rows)} policy runs to {args.output.resolve()}")
+    out_label = args.output.name if args.output.is_absolute() else str(args.output)
+    print(f"\nWrote {len(rows)} policy runs to {out_label}")
 
 
 if __name__ == "__main__":
